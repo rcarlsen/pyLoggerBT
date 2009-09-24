@@ -1,3 +1,18 @@
+######################################################################
+##
+##    pyLoggerBT
+##    Data logger for S60 phones with bluetooth connected devices
+##    Robert Carlsen | robertcarlsen.net
+##
+##    Based off bluetooth connection examples from Nokia
+##
+##    Initially written in service of course work at 
+##    NYU's Interactive Telecommunications Program (ITP) | itp.nyu.edu
+##
+##    This program is released under the BSD License, or something.
+##
+######################################################################
+
 SYMBIAN_UID = 0x0fffffff
 
 import socket
