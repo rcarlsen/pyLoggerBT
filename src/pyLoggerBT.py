@@ -208,7 +208,7 @@ def quit():
 # and the related callback functions (item1, item2) 
 appuifw.app.menu = [(u"Connect...",init),
                     (u"Stop Logging",stopLogging),
-                    (u"Options...",options),
+                    (u"Configure...",options),
                     (u"Info", info)]
 
 appuifw.app.exit_key_handler = quit
