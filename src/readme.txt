@@ -43,7 +43,7 @@ Launch pyLoggerBT, then select Options -> Configure. Set the appropriate call ch
 
 Select Options -> Connect... to choose the bluetooth device connected to your sensor hardware.
 After a successful connection the program will automatically begin displaying logging data
-while simultaneously writing received data to the memory card.
+while simultaneously writing received data to the memory card in CSV format.
 
 Select Option -> Stop Logging to end the logging session and disconnect from the bluetooth device.
 This also closes the file and will display the file name.
