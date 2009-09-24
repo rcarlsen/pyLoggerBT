@@ -21,6 +21,10 @@ timer = e32.Ao_timer()
 def ljust(s,l,c):
     return(s+c*l)[:l]
 
+# set up some variables:
+callChar = u"a"
+delimiter = u" "
+
 # a simple class for accessing the bluetooth stack:
 class BTReader:
     def connect(self):
@@ -34,12 +38,14 @@ class BTReader:
     def readposition(self):    
         try:
             # set up a call and response:
-            self.sock.send('A')
+            # TODO: set up a user preference for this character
+            self.sock.send(callChar)
 
             while 1:
-                buffer = ""
                 ch = self.sock.recv(1)
-                while(ch != '\r'):
+                buffer = ch
+                # TODO: this assumes a message line delimiter of 0x10. make this a user preference
+                while(ch != '\n'):
                     ch = self.sock.recv(1)
                     buffer += ch
                 return buffer
@@ -63,7 +69,7 @@ def init():
         datadir = u'e:/Python/Data/' + filetimestamp + u'.csv'
         global file
         file = open(datadir, 'a+')
-        
+
         bt.connect()
         
         #read the first to bits of data to clear out the headers
@@ -112,7 +118,11 @@ def main():
     #            timeStamp += u'.'+ millis
     
                 #format the output string:
-                out = u'\"' + timeStamp + u'\"' + u',' + data.strip() + u'\n'
+                #split the incoming data into an array and then format for CSV
+                global delimiter
+                fields = data.strip().split(delimiter)
+                output = u",".join(fields)
+                out = u'\"' + timeStamp + u'\"' + u',' + output + u'\n'
                 
                 #print to the screen:
                 log_panel.add(out)
@@ -126,7 +136,8 @@ def main():
                 #e32.ao_sleep(0.25, main)
             
                 #recursively call the main loop
-                timer.after(0.25, main)
+                #timer.after(0.25, main)
+                timer.after(0.1, main)
     
 
 # create the "callback functions" for the application menu
@@ -153,7 +164,17 @@ def stopLogging():
     else:
         appuifw.note(u"Not logging. Start logging with Connect...", "info")
 
-    
+def options():
+    # creating a pop-up menu for options
+    L = [u"Set callChar", u"Other options..."]
+    test = appuifw.popup_menu(L, u"Options")
+
+    if test == 0 :
+        global callChar
+        callChar = appuifw.query(u"Set callChar char", "text", callChar) 
+    elif test == 1 :
+        appuifw.note(u"Other options will go here.", "info")
+
     
 # define an exit handler function
 def quit():
@@ -172,6 +193,7 @@ def quit():
 # and the related callback functions (item1, item2) 
 appuifw.app.menu = [(u"Connect...",init),
                     (u"Stop Logging",stopLogging),
+                    (u"Options...",options),
                     (u"Info", info)]
 
 appuifw.app.exit_key_handler = quit
