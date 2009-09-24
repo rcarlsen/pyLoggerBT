@@ -26,7 +26,7 @@ physical computing and wearable experiments. It's been robust enough for me, but
 While I'd like to make the software flexible enough to work with many possible configurations, I'll
 describe the current scenario.
 
-I have an ATMega168 (Arduino) reading several sensors and is connected to a BlueSMIRF module.
+I have an ATMega168 (Arduino), reading several sensors, which is connected to a BlueSMIRF module.
 It is configured for a call and response protocol over serial. The microcontroller will sent 
 one set of readings delimited by spaces (0x20) and terminated with linefeed and carriage 
 return (0x0A,0x0D) when it receives an 'a' character over serial. The call character is 
