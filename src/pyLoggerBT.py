@@ -40,15 +40,22 @@ def ljust(s,l,c):
 callChar = u"a"
 delimiter = u" "
 
+connectionDescription = u""
+
 # a simple class for accessing the bluetooth stack:
 class BTReader:
     def connect(self):
         self.sock = socket.socket(socket.AF_BT, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
         address, services = socket.bt_discover()
-        log_panel.add(u"Discovered: %s, %s" % (address, services) + u'\n\r')
+        global connectionDescription
+        connectionDescription = u"Discovered: %s, %s" % (address, services) + u'\n\r'
+        log_panel.set(connectionDescription)
         target = (address, services.values()[0])
-        log_panel.add(u"Connecting to " + str(target)+ u'\n\r')
+        connectionDescription += u"Connecting to " + str(target)+ u'\n\r'
+        log_panel.set(connectionDescription)
         self.sock.connect(target)
+        
+        
 
     def readposition(self):    
         try:
@@ -140,7 +147,9 @@ def main():
                 out = u'\"' + timeStamp + u'\"' + u',' + output + u'\n'
                 
                 #print to the screen:
-                log_panel.add(out)
+                global connectionDescription
+                log_panel.set(connectionDescription + u'\n\r' + out)
+#                log_panel.add(out)
                 
                 # write the data to the file
                 file.write(out)
