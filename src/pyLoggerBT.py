@@ -27,7 +27,7 @@ def getTime():
     return time.clock() + CLOCK_OFFSET
 
 # hack for the milliseconds
-lastTime = time.clock()
+lastTime = getTime()
 
 # set the poll rate:
 timer = e32.Ao_timer()
@@ -126,19 +126,19 @@ def main():
                 # getTime returns: 1226521341.98437
                 # we only want the three most significant digits of the decimal
                 
+                timeSeconds = getTime()
+                timeStamp = time.strftime(u"%d/%b/%Y %H:%M:%S",time.gmtime(timeSeconds))
+                microsecond = str(timeSeconds).split('.')[1]
+                timeStamp += u'.' + ljust(microsecond,3,'0') #padding/trimming the microsecond time
                 
-                timeStamp = time.strftime(u"%d/%b/%Y %H:%M:%S")
-                
-                # there is still weirdness in the time...time() and clock() arn not in sync
-    #            currentTime = time.clock()
-    #            global lastTime
-    #            millis = currentTime - lastTime
-    #            lastTime = currentTime
-    #            millis = str(millis).split('.')[1]
-    #            millis = ljust(millis,3,'0')
-    #                   
-    #            timeStamp += u'.'+ millis
-    
+                # there is still weirdness in the time...time() and clock() are not in sync
+#                global lastTime
+#                currentTime = getTime()
+#                millisDelta = (currentTime - lastTime)%1000
+#                lastTime = currentTime
+#                       
+#                timeStamp += u'.'+ str(millisDelta)
+                    
                 #format the output string:
                 #split the incoming data into an array and then format for CSV
                 global delimiter
